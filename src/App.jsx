@@ -62,75 +62,11 @@ function App() {
 
         <div className="texts">
           <div className="textcontent">
-            
+
           </div>
           <h1>Hello World</h1>
           <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
-        </div> 
+        </div>
 
       </div>
     </div>
