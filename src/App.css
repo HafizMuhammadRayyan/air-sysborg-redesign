@@ -182,18 +182,29 @@ body {
 }
 
 .content>.texts {
+    border: 2px solid red;
     width: 70%;
     background-color: whitesmoke;
     color: black;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
+    row-gap: 15px;
+    /* align-items: center;
+    justify-content: center; */
+    padding: 30px 20px;
     border-radius: 10px;
 }
 
+.content>.texts>div{
+    border: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
+.content>.texts>div>#text_link{
+    border: 1px solid red;
+}
 
 
 

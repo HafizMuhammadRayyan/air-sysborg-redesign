@@ -61,14 +61,35 @@ function App() {
       <div className="content">
 
         <div className="texts">
-          <div className="textcontent">
 
+          <div className="textcontent">
+            <p id='dbIP'>10.1.29.162</p>
+            <p id='text_link'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, amet.</p>
+            <p id='fromNow'>14 hour ago</p>
           </div>
-          <h1>Hello World</h1>
-          <h1>Hello World</h1>
+
+          <div className="textcontent">
+            <p id='dbIP'>10.1.40.150</p>
+            <p id='text_link'>https://www.microsoft.com/en-us/software-download/windows10.</p>
+            <p id='fromNow'>9 hour ago</p>
+          </div>
+
+          <div className="textcontent">
+            <p id='dbIP'>10.1.3.231</p>
+            <p id='text_link'>https://newsappbyabrar.web.app/</p>
+            <p id='fromNow'>2 days ago</p>
+          </div>
+
+          <div className="textcontent">
+            <p id='dbIP'>10.1.25.206</p>
+            <p id='text_link'>https://github.com/Aahad-Ali/complete-news-app</p>
+            <p id='fromNow'>1 month ago</p>
+          </div>
+
         </div>
 
       </div>
+
     </div>
   )
 }
