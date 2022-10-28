@@ -132,9 +132,9 @@ function App() {
             <div className="textcontent" key={i}>
               <p id='dbIP'>10.1.29.162</p>
               <p id='text_link'>{eachPost?.text}</p>
-              <p id='fromNow'>{moment(eachPost?.createdOn, "YYYYMMDD").fromNow()}</p>
+              <p id='fromNow'>{moment(eachPost?.createdOn).fromNow()}</p>
             </div>
-
+             
           ))
           }
 

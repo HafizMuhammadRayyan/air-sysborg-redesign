@@ -203,6 +203,10 @@ body {
     justify-content: space-between;
 }
 
+.content>.texts>div>#fromNow{
+    font-size: 12px;
+}
+
 .content>.texts>div>#text_link{
     /* border: 1px solid red; */
 }
