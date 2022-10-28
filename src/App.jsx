@@ -59,10 +59,10 @@ function App() {
 
     getData();
 
-    
+
   }, [])
-  
-  
+
+
   const classId = (e) => {
     e.preventDefault();
     console.log(posts);
@@ -127,15 +127,15 @@ function App() {
         <div className="texts">
 
 
-          {posts.map(eachPost => {
+          {posts.map(eachPost => (
 
             <div className="textcontent" key={eachPost?.createdOn}>
-              {/* <p id='dbIP'>10.1.29.162</p> */}
+              <p id='dbIP'>10.1.29.162</p>
               <p id='text_link'>{eachPost?.text}</p>
               <p id='fromNow'>{moment(eachPost?.createdOn, "YYYYMMDD").fromNow()}</p>
             </div>
 
-          })
+          ))
           }
 
 
