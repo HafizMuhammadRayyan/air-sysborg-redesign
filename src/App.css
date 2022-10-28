@@ -182,7 +182,7 @@ body {
 }
 
 .content>.texts {
-    border: 2px solid red;
+    /* border: 2px solid red; */
     width: 70%;
     background-color: whitesmoke;
     color: black;
@@ -196,14 +196,14 @@ body {
 }
 
 .content>.texts>div{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .content>.texts>div>#text_link{
-    border: 1px solid red;
+    /* border: 1px solid red; */
 }
 
 

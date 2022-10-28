@@ -1,24 +1,88 @@
-import './App.css'
-import { useState } from 'react';
-import { MdAddPhotoAlternate } from 'react-icons/md';
-import { BiSearchAlt } from 'react-icons/bi';
-import arrow from './assets/ggg.gif';
 // import { HiChevronDoubleDown } from 'react-icons/hi';
 // import arrow from './assets/arrow-down-icon.gif';
 
+import './App.css'
+import arrow from './assets/ggg.gif';
+import moment from 'moment';
+
+import { useState, useEffect } from 'react';
+import { MdAddPhotoAlternate } from 'react-icons/md';
+import { BiSearchAlt } from 'react-icons/bi';
+
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+
+
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://firebase.google.com/docs/web/learn-more#config-object
+const firebaseConfig = {
+  apiKey: "AIzaSyAyiRAqCg7lpMN_8C3HGRvkxY1CuoTxtrA",
+  authDomain: "hello-world-data-base.firebaseapp.com",
+  projectId: "hello-world-data-base",
+  storageBucket: "hello-world-data-base.appspot.com",
+  messagingSenderId: "850233580943",
+  appId: "1:850233580943:web:31c62c3e1ace683190fffa"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+
 function App() {
 
-  const [value, setValue] = useState("");
 
+  const [value, setValue] = useState("");
+  const [posts, setPosts] = useState([]);
+
+
+  useEffect(() => {
+
+    const getData = async () => {
+      const querySnapshot = await getDocs(collection(db, "posts"));
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => `, doc.data());
+
+        // setPosts([...posts, doc.data()]);
+        setPosts((prev) => {
+          let newArray = [...prev, doc.data()];
+          return newArray
+        });
+
+
+      });
+    }
+
+    getData();
+
+    
+  }, [])
+  
+  
   const classId = (e) => {
     e.preventDefault();
+    console.log(posts);
   }
 
-  const adding = (e) => {
+  const savePost = async (e) => {
     e.preventDefault();
 
-    console.log("Funtion running");
-    console.log("Value ", value);
+    console.log("Save post function running and value is ", value);
+
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        text: value,
+        createdOn: new Date().getTime(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+
   }
 
 
@@ -38,7 +102,7 @@ function App() {
         </div>
 
         <div className="add_file_inp nav_mid_child">
-          <form onSubmit={adding}>
+          <form onSubmit={savePost}>
             <input type="text" id="mainInp" placeholder='Enter any text or Link'
               onChange={(e) => {
                 console.log("onchange");
@@ -62,29 +126,18 @@ function App() {
 
         <div className="texts">
 
-          <div className="textcontent">
-            <p id='dbIP'>10.1.29.162</p>
-            <p id='text_link'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, amet.</p>
-            <p id='fromNow'>14 hour ago</p>
-          </div>
 
-          <div className="textcontent">
-            <p id='dbIP'>10.1.40.150</p>
-            <p id='text_link'>https://www.microsoft.com/en-us/software-download/windows10.</p>
-            <p id='fromNow'>9 hour ago</p>
-          </div>
+          {posts.map(eachPost => {
 
-          <div className="textcontent">
-            <p id='dbIP'>10.1.3.231</p>
-            <p id='text_link'>https://newsappbyabrar.web.app/</p>
-            <p id='fromNow'>2 days ago</p>
-          </div>
+            <div className="textcontent" key={eachPost?.createdOn}>
+              {/* <p id='dbIP'>10.1.29.162</p> */}
+              <p id='text_link'>{eachPost?.text}</p>
+              <p id='fromNow'>{moment(eachPost?.createdOn, "YYYYMMDD").fromNow()}</p>
+            </div>
 
-          <div className="textcontent">
-            <p id='dbIP'>10.1.25.206</p>
-            <p id='text_link'>https://github.com/Aahad-Ali/complete-news-app</p>
-            <p id='fromNow'>1 month ago</p>
-          </div>
+          })
+          }
+
 
         </div>
 
