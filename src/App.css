@@ -203,8 +203,10 @@ body {
     justify-content: space-between;
 }
 
-.content>.texts>div>#fromNow {
-    font-size: 12px;
+.content>.texts>div>#dbIP {
+    /* border: 1px solid red; */
+    width: 100px;
+    text-align: center;
 }
 
 .content>.texts>div>#text_link {
@@ -212,6 +214,14 @@ body {
     text-align: justify;
     width: 600px;
 }
+
+.content>.texts>div>#fromNow {
+    /* border: 1px solid red; */
+    font-size: 12px;
+    width: 100px;
+    text-align: center;
+}
+
 
 
 
