@@ -11,7 +11,8 @@ import { BiSearchAlt } from 'react-icons/bi';
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, onSnapshot, query } from "firebase/firestore";
+
 
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -42,23 +43,46 @@ function App() {
 
   useEffect(() => {
 
-    const getData = async () => {
-      const querySnapshot = await getDocs(collection(db, "posts"));
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => `, doc.data());
+    // const getData = async () => {
+    //   const querySnapshot = await getDocs(collection(db, "posts"));
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(`${doc.id} => `, doc.data());
 
-        // setPosts([...posts, doc.data()]);
-        setPosts((prev) => {
-          let newArray = [...prev, doc.data()];
-          return newArray
+    //     // setPosts([...posts, doc.data()]);
+
+    //     setPosts((prev) => {
+    //       let newArray = [...prev, doc.data()];
+
+    //       return newArray
+    //     });
+
+
+    //   });
+    // }
+
+    // getData();
+
+    let unsubscribe = null;
+    const getRealtimeData = () => {
+      const q = query(collection(db, "posts"));
+      unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const posts = [];
+
+        querySnapshot.forEach((doc) => {
+          posts.push(doc.data());
         });
 
-
+        setPosts(posts);
+        console.log("posts: ", posts);
       });
     }
 
-    getData();
+    getRealtimeData();
 
+    return () => {
+      console.log("CleanUp functions");
+      unsubscribe();
+    }
 
   }, [])
 
@@ -82,6 +106,8 @@ function App() {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+
+    // setValue("");
 
   }
 
@@ -134,7 +160,7 @@ function App() {
               <p id='text_link'>{eachPost?.text}</p>
               <p id='fromNow'>{moment(eachPost?.createdOn).fromNow()}</p>
             </div>
-             
+
           ))
           }
 
