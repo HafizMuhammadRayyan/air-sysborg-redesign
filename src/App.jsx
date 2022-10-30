@@ -2,20 +2,27 @@
 // import arrow from './assets/arrow-down-icon.gif';
 
 import './App.css'
+import { useState, useEffect } from 'react';
 import arrow from './assets/ggg.gif';
+
+// Moment library imports
 import moment from 'moment';
 
-import { useState, useEffect } from 'react';
-import { MdAddPhotoAlternate } from 'react-icons/md';
+// React icons imports
+import { MdAddPhotoAlternate, MdDeleteForever } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
 
+// Firebase imports
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, addDoc, getDocs, doc, onSnapshot, query } from "firebase/firestore";
+import {
+  getFirestore, collection, deleteDoc,
+  addDoc, getDocs, doc, orderBy,
+  onSnapshot, query, serverTimestamp,
+  updateDoc, deleteField
+} from "firebase/firestore";
 
 
 
-// TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
   apiKey: "AIzaSyAyiRAqCg7lpMN_8C3HGRvkxY1CuoTxtrA",
@@ -64,12 +71,13 @@ function App() {
 
     let unsubscribe = null;
     const getRealtimeData = () => {
-      const q = query(collection(db, "posts"));
+      const q = query(collection(db, "posts"), orderBy("createdOn", "desc"));
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         const posts = [];
 
         querySnapshot.forEach((doc) => {
-          posts.push(doc.data());
+          let data = { ...doc.data(), id: doc.id };
+          posts.push(data);
         });
 
         setPosts(posts);
@@ -100,17 +108,45 @@ function App() {
     try {
       const docRef = await addDoc(collection(db, "posts"), {
         text: value,
-        createdOn: new Date().getTime(),
+        createdOn: serverTimestamp(),
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
-    }
 
-    // setValue("");
+    }
 
   }
 
+
+  const deletePost = async (postId) => {
+
+    let password = prompt("Please Enter a password to delete this data.");
+
+    if (password === "123delete") {
+      await deleteDoc(doc(db, "posts", postId));
+      console.log("Document deleted with ID: ", postId);
+    }
+    else {
+      alert("Sorry wrong password");
+    }
+  }
+
+  // const deleteAll = async () => {
+  //   let password = prompt("Please Enter a password to delete this data.");
+
+  //   if (password === "123delete") {
+  //     const postRef = doc(db, 'posts');
+
+  //     // Remove the 'capital' field from the document
+  //     await updateDoc(postRef, {
+  //       posts: deleteField()
+  //     });
+  //   }
+  //   else {
+  //     alert("Sorry wrong password");
+  //   }
+  // }
 
   return (
     <div className='container'>
@@ -158,7 +194,15 @@ function App() {
             <div className="textcontent" key={i}>
               <p id='dbIP'>10.1.29.162</p>
               <p id='text_link'>{eachPost?.text}</p>
-              <p id='fromNow'>{moment(eachPost?.createdOn).fromNow()}</p>
+              <div id="fromNow">
+                <p>{moment((eachPost?.createdOn?.seconds)
+                  ? eachPost?.createdOn?.seconds * 1000
+                  :
+                  undefined).fromNow()}</p>
+                <MdDeleteForever id='delLogo' onClick={() => {
+                  deletePost(eachPost?.id);
+                }}></MdDeleteForever>
+              </div>
             </div>
 
           ))
