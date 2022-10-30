@@ -177,6 +177,16 @@ body {
     background-color: white;
     color: var(--primary);
     font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.del_all_btn>button:hover{
+    padding: 6px 18px;
+    border: 2px solid white;
+    background-color: var(--primary);
+    color: white;
+    box-sizing: border-box;
+    transition: .2s;
 }
 
 .content {
