@@ -132,21 +132,18 @@ function App() {
     }
   }
 
-  // const deleteAll = async () => {
-  //   let password = prompt("Please Enter a password to delete this data.");
 
-  //   if (password === "123delete") {
-  //     const postRef = doc(db, 'posts');
+  const deleteAll = async () => {
+    let password = prompt("Please Enter a password to delete this data.");
 
-  //     // Remove the 'capital' field from the document
-  //     await updateDoc(postRef, {
-  //       posts: deleteField()
-  //     });
-  //   }
-  //   else {
-  //     alert("Sorry wrong password");
-  //   }
-  // }
+    if (password === "123delete") {
+      await deleteDoc(doc(db, "posts"));
+    }
+    else {
+      alert("Sorry wrong password");
+    }
+
+  }
 
   return (
     <div className='container'>
@@ -177,7 +174,7 @@ function App() {
         </div>
 
         <div className="del_all_btn nav-child">
-          <button>Delete All</button>
+          <button onClick={deleteAll}>Delete All</button>
         </div>
 
       </nav>
@@ -193,15 +190,29 @@ function App() {
 
             <div className="textcontent" key={i}>
               <p id='dbIP'>10.1.29.162</p>
-              <p id='text_link'>{eachPost?.text}</p>
+
+              {
+                (eachPost.text.slice(0, 5) === "https" || eachPost.text.slice(0, 4) === "http")
+                  ?
+                  <p id='text_link'>
+                    <a href={eachPost?.text} rel="noreferrer" target="_blank">{eachPost?.text}</a>
+                  </p>
+                  :
+                  <p id='text_link'>{eachPost?.text}</p>
+              }
+
               <div id="fromNow">
                 <p>{moment((eachPost?.createdOn?.seconds)
                   ? eachPost?.createdOn?.seconds * 1000
                   :
                   undefined).fromNow()}</p>
-                <MdDeleteForever id='delLogo' onClick={() => {
-                  deletePost(eachPost?.id);
-                }}></MdDeleteForever>
+
+                <div>
+                  <MdDeleteForever id='delLogo' onClick={() => {
+                    deletePost(eachPost?.id);
+                  }}></MdDeleteForever>
+                </div>
+
               </div>
             </div>
 
