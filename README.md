@@ -1,6 +1,7 @@
 # air-sysborg-redesign
 
 
+
 # Hi 👋, I'm H.M Rayyan
 
 
@@ -8,7 +9,7 @@
 Front-end developer, Html, CSS, JavaScript, Bootstrap, Tailwind CSS, I'm constantly studying React, Node JS, MongoDB, and app development.
 
 
-## 🛠 Using technologies
+## 🛠 Using technologies for this project
 Htm5, Css3, Javascript(Es6), ReactJs, Firebase Hosting and Database, 
  Api for fetch id address
 
@@ -16,16 +17,6 @@ Htm5, Css3, Javascript(Es6), ReactJs, Firebase Hosting and Database,
 ## Screenshots
 
 ![App Screenshot](https://res.cloudinary.com/dg5fxzdg1/image/upload/v1667291060/sysborg_redesign_qsqmz1.jpg)
-
-## API Reference
-
-#### Get all items
-
-```http
-  GET https://api.db-ip.com/v2/free/self
-```
-
-
 
 ## Demo
 
