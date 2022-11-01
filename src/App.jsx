@@ -5,7 +5,7 @@ import './App.css'
 import { useState, useEffect } from 'react';
 import arrow from './assets/ggg.gif';
 
-// Moment library imports
+// Moment and Axios library imports
 import moment from 'moment';
 import axios from 'axios';
 
@@ -54,10 +54,10 @@ function App() {
   // ----- Get Ip Address -----
   const getIp = () => {
 
-    axios.get('http://ip-api.com/json')
+    axios.get('https://api.db-ip.com/v2/free/self')
       .then(res => {
-        console.log(res.data.query);
-        setIP(res.data.query);
+        // console.log(res.data.ipAddress);
+        setIP(res.data.ipAddress);
       })
       .catch(err => {
         console.log(err);
