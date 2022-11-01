@@ -7,6 +7,8 @@ import arrow from './assets/ggg.gif';
 
 // Moment library imports
 import moment from 'moment';
+import axios from 'axios';
+
 
 // React icons imports
 import { MdAddPhotoAlternate, MdDeleteForever } from 'react-icons/md';
@@ -46,9 +48,29 @@ function App() {
 
   const [value, setValue] = useState("");
   const [posts, setPosts] = useState([]);
+  const [ip, setIP] = useState('');
+
+
+  // ----- Get Ip Address -----
+  const getIp = () => {
+
+    axios.get('http://ip-api.com/json')
+      .then(res => {
+        console.log(res.data.query);
+        setIP(res.data.query);
+      })
+      .catch(err => {
+        console.log(err);
+        setIP(err);
+      })
+
+  }
+
 
 
   useEffect(() => {
+
+    getIp();
 
     // const getData = async () => {
     //   const querySnapshot = await getDocs(collection(db, "posts"));
@@ -98,6 +120,7 @@ function App() {
   const classId = (e) => {
     e.preventDefault();
     console.log(posts);
+    // console.log(getIp);
   }
 
   const savePost = async (e) => {
@@ -109,6 +132,7 @@ function App() {
       const docRef = await addDoc(collection(db, "posts"), {
         text: value,
         createdOn: serverTimestamp(),
+        userIp: ip,
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
@@ -169,7 +193,7 @@ function App() {
               }} />
             <label htmlFor="addFile"><MdAddPhotoAlternate /></label>
             <input type="file" id='addFile' className='hide' />
-            <button><img src={arrow} alt="" /></button>
+            <button><img src={arrow} alt="Submit button" /></button>
           </form>
         </div>
 
@@ -189,7 +213,7 @@ function App() {
           {posts.map((eachPost, i) => (
 
             <div className="textcontent" key={i}>
-              <p id='dbIP'>10.1.29.162</p>
+              <p id='dbIP'>{eachPost?.userIp}</p>
 
               {
                 (eachPost.text.slice(0, 5) === "https" || eachPost.text.slice(0, 4) === "http")
