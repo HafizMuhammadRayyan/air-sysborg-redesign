@@ -55,9 +55,53 @@ function App() {
 
   const [value, setValue] = useState("");
   const [posts, setPosts] = useState([]);
-  // const [classId, setClassId] = useState('');
+  const [classId, setClassId] = useState('');
   const [ip, setIP] = useState('');
-  const ClassIds = ["web", "ai", "b3"];
+  const classIds = ["web", "ai", "b3"];
+  // const [defId,setDefId ] = useState(true);
+
+  const classIdchecker = (e) => {
+    e.preventDefault();
+
+    for (let i = 0; i < classIds.length; i++) {
+      if (classIds[i] === classId) {
+        console.log("hello papa ", classIds[i]);
+
+        let unsubscribe = null;
+        const getRealtimeData = () => {
+          const q = query(collection(db, classId), orderBy("createdOn", "desc"));
+          unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const posts = [];
+
+            querySnapshot.forEach((doc) => {
+              let data = { ...doc.data(), id: doc.id };
+              posts.push(data);
+            });
+
+            setPosts(posts);
+            console.log("posts: ", classId);
+          });
+        }
+
+        getRealtimeData();
+
+        return () => {
+          console.log("CleanUp functions");
+          unsubscribe();
+        }
+
+        break
+      }
+      else {
+        console.log("error ");
+      }
+
+    }
+  }
+
+  // const getClassId = () => {
+
+  // }
 
 
   // ----- Get Ip Address -----
@@ -77,26 +121,6 @@ function App() {
 
 
   useEffect(() => {
-
-
-
-    const classIdchecker = (e) => {
-      e.preventDefault();
-
-      // for (let i = 0; i < ClassIds.length; i++) {
-      //   // const element = array[i];
-      //   if
-
-      // }
-
-    }
-
-
-
-
-
-
-
 
 
 
@@ -169,7 +193,7 @@ function App() {
     }
     else {
       try {
-        const docRef = await addDoc(collection(db, "posts"), {
+        const docRef = await addDoc(collection(db, classId),{
           text: value,
           createdOn: serverTimestamp(),
           userIp: ip,
@@ -179,7 +203,7 @@ function App() {
       catch (e) {
         console.error("Error adding document: ", e);
       }
-      setValue("");
+      // setValue("");
       document.getElementById("mainInp").value = null;
 
     }
@@ -206,14 +230,25 @@ function App() {
   }
 
 
+
+
   const deleteAll = async () => {
 
     console.log("Delete all function running");
-    const cityRef = doc(db, "posts");
 
-    await updateDoc(cityRef, {
-      capital: deleteField()
-    });
+    let password = prompt("Please Enter a password to delete this data.");
+
+    if (password === "123delete") {
+
+      posts.map(async (eachPost, i) => {
+        await deleteDoc(doc(db, "posts", eachPost?.id));
+
+      })
+      // console.log("Document deleted with ID: ", eachPost.postId);
+    }
+    else {
+      alert("Sorry wrong password");
+    }
 
   }
 
@@ -223,10 +258,15 @@ function App() {
       <nav className='navbar'>
 
         <div className="class_id nav-child">
-          <form onSubmit={sendPost}>
+          <form onSubmit={classIdchecker}>
             <label htmlFor="classId-Inp" className='class_id_label'>Class Id</label>
             <div className='searchClassBar'>
-              <input type="text" className="class_id_label" id="classId-Inp" />
+              <input type="text" className="class_id_label" id="classId-Inp"
+                onChange={(e) => {
+                  // console.log("onchange");
+                  setClassId(e.target.value);
+                }}
+              />
               <button type='submit'><BiSearchAlt /></button>
             </div>
           </form>
@@ -234,7 +274,7 @@ function App() {
 
         <div className="add_file_inp nav_mid_child">
           <form onSubmit={sendPost}>
-            <input type="text" id="mainInp" placeholder='Enter any text or Link'
+            <input required type="text" id="mainInp" placeholder='Enter any text or Link'
               onChange={(e) => {
                 console.log("onchange");
                 setValue(e.target.value);
