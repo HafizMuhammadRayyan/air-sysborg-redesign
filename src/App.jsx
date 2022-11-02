@@ -3,7 +3,8 @@
 
 import './App.css'
 import { useState, useEffect } from 'react';
-import arrow from './assets/ggg.gif';
+import arrow from './assets/animatedArrow.gif';
+
 
 // Moment and Axios library imports
 import moment from 'moment';
@@ -14,13 +15,13 @@ import axios from 'axios';
 import { MdAddPhotoAlternate, MdDeleteForever } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
 
+
 // Firebase imports
 import { initializeApp } from "firebase/app";
 import {
   getFirestore, collection, deleteDoc,
   addDoc, getDocs, doc, orderBy,
-  onSnapshot, query, serverTimestamp,
-  updateDoc, deleteField
+  onSnapshot, query, serverTimestamp
 } from "firebase/firestore";
 
 
@@ -34,6 +35,7 @@ const firebaseConfig = {
   messagingSenderId: "850233580943",
   appId: "1:850233580943:web:31c62c3e1ace683190fffa"
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -55,11 +57,13 @@ function App() {
 
   const [value, setValue] = useState("");
   const [posts, setPosts] = useState([]);
-  const [classId, setClassId] = useState('');
+  const [classId, setClassId] = useState("posts");
   const [ip, setIP] = useState('');
   const classIds = ["web", "ai", "b3"];
-  // const [defId,setDefId ] = useState(true);
 
+
+
+// ---------- Class ids Checker and Show Result ----------
   const classIdchecker = (e) => {
     e.preventDefault();
 
@@ -99,12 +103,9 @@ function App() {
     }
   }
 
-  // const getClassId = () => {
-
-  // }
 
 
-  // ----- Get Ip Address -----
+// ---------- Get Ip Address ----------
   const getIp = () => {
 
     axios.get('https://api.db-ip.com/v2/free/self')
@@ -120,8 +121,8 @@ function App() {
 
 
 
+// ---------- Use Effect Running when page load----------
   useEffect(() => {
-
 
 
     getIp();
@@ -146,14 +147,6 @@ function App() {
     // getData();
 
     let unsubscribe = null;
-
-    // const = checkIds = () => {
-
-    //   if (classId === "") {
-    //     return;
-    //   }
-    //   else if ()
-    // }
 
 
     const getRealtimeData = () => {
@@ -182,6 +175,7 @@ function App() {
 
 
 
+// ---------- Sending post in Database (Firebase) ----------
   const sendPost = async (e) => {
     e.preventDefault();
 
@@ -210,18 +204,15 @@ function App() {
 
   }
 
-  // const test = () => {
 
 
-  // }
-
-
+// ---------- Delete Post ----------
   const deletePost = async (postId) => {
 
     let password = prompt("Please Enter a password to delete this data.");
 
     if (password === "123delete") {
-      await deleteDoc(doc(db, "posts", postId));
+      await deleteDoc(doc(db, classId, postId));
       console.log("Document deleted with ID: ", postId);
     }
     else {
@@ -231,7 +222,7 @@ function App() {
 
 
 
-
+// ---------- Delete All Posts ----------
   const deleteAll = async () => {
 
     console.log("Delete all function running");
@@ -241,16 +232,16 @@ function App() {
     if (password === "123delete") {
 
       posts.map(async (eachPost, i) => {
-        await deleteDoc(doc(db, "posts", eachPost?.id));
+        await deleteDoc(doc(db, classId, eachPost?.id));
+      });
 
-      })
-      // console.log("Document deleted with ID: ", eachPost.postId);
     }
     else {
       alert("Sorry wrong password");
     }
 
   }
+
 
   return (
     <div className='container'>
