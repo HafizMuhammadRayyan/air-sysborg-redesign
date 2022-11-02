@@ -209,7 +209,7 @@ function App() {
 // ---------- Delete Post ----------
   const deletePost = async (postId) => {
 
-    let password = prompt("Please Enter a password to delete this data.");
+    let password = prompt("Please Enter a Password to Delete This Data.");
 
     if (password === "123delete") {
       await deleteDoc(doc(db, classId, postId));
@@ -227,7 +227,7 @@ function App() {
 
     console.log("Delete all function running");
 
-    let password = prompt("Please Enter a password to delete this data.");
+    let password = prompt("Please Enter a Password to Delete All Data.");
 
     if (password === "123delete") {
 
