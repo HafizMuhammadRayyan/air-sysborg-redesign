@@ -43,12 +43,21 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
+
+
+
+
+
+
+
 function App() {
 
 
   const [value, setValue] = useState("");
   const [posts, setPosts] = useState([]);
+  // const [classId, setClassId] = useState('');
   const [ip, setIP] = useState('');
+  const ClassIds = ["web", "ai", "b3"];
 
 
   // ----- Get Ip Address -----
@@ -56,7 +65,6 @@ function App() {
 
     axios.get('https://api.db-ip.com/v2/free/self')
       .then(res => {
-        // console.log(res.data.ipAddress);
         setIP(res.data.ipAddress);
       })
       .catch(err => {
@@ -69,6 +77,28 @@ function App() {
 
 
   useEffect(() => {
+
+
+
+    const classIdchecker = (e) => {
+      e.preventDefault();
+
+      // for (let i = 0; i < ClassIds.length; i++) {
+      //   // const element = array[i];
+      //   if
+
+      // }
+
+    }
+
+
+
+
+
+
+
+
+
 
     getIp();
 
@@ -92,6 +122,16 @@ function App() {
     // getData();
 
     let unsubscribe = null;
+
+    // const = checkIds = () => {
+
+    //   if (classId === "") {
+    //     return;
+    //   }
+    //   else if ()
+    // }
+
+
     const getRealtimeData = () => {
       const q = query(collection(db, "posts"), orderBy("createdOn", "desc"));
       unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -117,30 +157,39 @@ function App() {
   }, [])
 
 
-  const classId = (e) => {
-    e.preventDefault();
-    console.log(posts);
-    // console.log(getIp);
-  }
 
-  const savePost = async (e) => {
+  const sendPost = async (e) => {
     e.preventDefault();
 
     console.log("Save post function running and value is ", value);
 
-    try {
-      const docRef = await addDoc(collection(db, "posts"), {
-        text: value,
-        createdOn: serverTimestamp(),
-        userIp: ip,
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
+
+    if (value === "" || value === " ") {
+      return;
+    }
+    else {
+      try {
+        const docRef = await addDoc(collection(db, "posts"), {
+          text: value,
+          createdOn: serverTimestamp(),
+          userIp: ip,
+        });
+        console.log("Document written with ID: ", docRef.id);
+      }
+      catch (e) {
+        console.error("Error adding document: ", e);
+      }
+      setValue("");
+      document.getElementById("mainInp").value = null;
 
     }
 
   }
+
+  // const test = () => {
+
+
+  // }
 
 
   const deletePost = async (postId) => {
@@ -158,14 +207,13 @@ function App() {
 
 
   const deleteAll = async () => {
-    let password = prompt("Please Enter a password to delete this data.");
 
-    if (password === "123delete") {
-      await deleteDoc(doc(db, "posts"));
-    }
-    else {
-      alert("Sorry wrong password");
-    }
+    console.log("Delete all function running");
+    const cityRef = doc(db, "posts");
+
+    await updateDoc(cityRef, {
+      capital: deleteField()
+    });
 
   }
 
@@ -175,7 +223,7 @@ function App() {
       <nav className='navbar'>
 
         <div className="class_id nav-child">
-          <form onSubmit={classId}>
+          <form onSubmit={sendPost}>
             <label htmlFor="classId-Inp" className='class_id_label'>Class Id</label>
             <div className='searchClassBar'>
               <input type="text" className="class_id_label" id="classId-Inp" />
@@ -185,7 +233,7 @@ function App() {
         </div>
 
         <div className="add_file_inp nav_mid_child">
-          <form onSubmit={savePost}>
+          <form onSubmit={sendPost}>
             <input type="text" id="mainInp" placeholder='Enter any text or Link'
               onChange={(e) => {
                 console.log("onchange");

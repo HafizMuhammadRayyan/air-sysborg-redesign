@@ -229,8 +229,8 @@ body {
 
 .content>.texts>div>#dbIP {
     /* border: 1px solid red; */
-    width: 100px;
-    text-align: center;
+    width: 125px;
+    text-align: flex-start;
 }
 
 .content>.texts>div>#text_link {
