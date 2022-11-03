@@ -57,7 +57,7 @@ function App() {
 
   const [value, setValue] = useState("");
   const [posts, setPosts] = useState([]);
-  const [classId, setClassId] = useState("posts");
+  const [classId, setClassId] = useState("Home");
   const [ip, setIP] = useState('');
   const classIds = ["web", "ai", "b3"];
 
@@ -150,7 +150,7 @@ function App() {
 
 
     const getRealtimeData = () => {
-      const q = query(collection(db, "posts"), orderBy("createdOn", "desc"));
+      const q = query(collection(db, "Home"), orderBy("createdOn", "desc"));
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         const posts = [];
 
@@ -160,7 +160,7 @@ function App() {
         });
 
         setPosts(posts);
-        console.log("posts: ", posts);
+        console.log("Home: ", posts);
       });
     }
 
@@ -286,7 +286,9 @@ function App() {
 
       <div className="content">
 
+
         <div className="texts">
+        <p id='class-id-name'>{classId}</p>
 
 
           {posts.map((eachPost, i) => (
