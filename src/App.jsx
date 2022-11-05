@@ -222,6 +222,7 @@ function App() {
         })
         
         setFile("");
+        setChangeIcon(false)
 
 
 
@@ -297,7 +298,7 @@ function App() {
                 setValue(e.target.value);
               }} />
             <label htmlFor="addFile" >{(changeIcon) ? <AiFillCheckSquare /> : <MdAddPhotoAlternate />}</label>
-            <input type="file" id='addFile' className='hide'
+            <input type="file" id='addFile' accept="image/png, image/gif, image/jpeg" className='hide' 
               onChange={(e) => {
 
                 setFile(e.currentTarget.files[0])

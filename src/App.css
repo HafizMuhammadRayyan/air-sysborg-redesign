@@ -146,6 +146,7 @@ body {
     font-size: 39px;
     height: 40px;
     margin-left: 5px;
+    transition: 2s all;
 }
 
 .add_file_inp>form>button {
