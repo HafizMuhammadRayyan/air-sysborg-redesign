@@ -154,8 +154,11 @@ body {
     background: transparent;
     max-height: fit-content;
     /* border: 1px solid rgb(255, 255, 255); */
-
 }
+
+/* #checkMark{
+    color: #212789;
+} */
 
 .add_file_inp>form>button>img {
     width: 30px;
@@ -219,7 +222,7 @@ body {
     position: relative;
 }
 
-.content>.texts>div {
+.content>.texts>.textcontent {
     font-family: 'Poppins', sans-serif;
     border-bottom: .3px solid #d2d0d0;
     padding-bottom: 5px;
@@ -228,24 +231,40 @@ body {
     justify-content: space-between;
 }
 
-.content>.texts>div>#dbIP {
+.content>.texts>.textcontent>.text_and_image{
     /* border: 1px solid red; */
-    width: 125px;
-    text-align: flex-start;
+    width: 550px;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    flex-direction: column;
 }
 
-.content>.texts>div>#text_link {
+.content>.texts>.textcontent>.text_and_image>img{
+    width: 50%;
+    margin-top: 30px;
+}
+
+.content>.texts>.textcontent>.text_and_image>#text_link {
     /* border: 1px solid red; */
     text-align: justify;
     width: 550px;
 }
 
-.content>.texts>div>#text_link>a {
+.content>.texts>.textcontent>.text_and_image>#text_link>a {
     text-align: justify;
     /* width: 550px; */
 }
 
-.content>.texts>div>#fromNow {
+
+
+.content>.texts>.textcontent>#dbIP {
+    /* border: 1px solid red; */
+    width: 125px;
+    text-align: flex-start;
+}
+
+.content>.texts>.textcontent>#fromNow {
     /* border: 1px solid red; */
     font-size: 12px;
     width: 100px;
@@ -255,19 +274,19 @@ body {
     font-weight: 400;
 }
 
-.content>.texts>div>#fromNow>p {
+.content>.texts>.textcontent>#fromNow>p {
     /* border: 1px solid red; */
     width: 80px;
 }
 
 
-.content>.texts>div>#fromNow>div>#delLogo {
+.content>.texts>.textcontent>#fromNow>div>#delLogo {
     /* border: 1px solid red; */
     font-size: 17px;
     color: black;
 }
 
-.content>.texts>div>#fromNow #delLogo:hover {
+.content>.texts>.textcontent>#fromNow #delLogo:hover {
     color: red;
 }
 

@@ -14,6 +14,8 @@ import axios from 'axios';
 // React icons imports
 import { MdAddPhotoAlternate, MdDeleteForever } from 'react-icons/md';
 import { BiSearchAlt } from 'react-icons/bi';
+import { BsCheckSquareFill } from 'react-icons/bs';
+import { AiFillCheckSquare } from 'react-icons/ai';
 
 
 // Firebase imports
@@ -58,12 +60,14 @@ function App() {
   const [value, setValue] = useState("");
   const [posts, setPosts] = useState([]);
   const [classId, setClassId] = useState("Home");
-  const [ip, setIP] = useState('');
+  const [ip, setIP] = useState("");
+  const [changeIcon, setChangeIcon] = useState(false);
+  const [file, setFile] = useState("");
   const classIds = ["web", "ai", "b3"];
 
 
 
-// ---------- Class ids Checker and Show Result ----------
+  // ---------- Class ids Checker and Show Result ----------
   const classIdchecker = (e) => {
     e.preventDefault();
 
@@ -105,7 +109,7 @@ function App() {
 
 
 
-// ---------- Get Ip Address ----------
+  // ---------- Get Ip Address ----------
   const getIp = () => {
 
     axios.get('https://api.db-ip.com/v2/free/self')
@@ -121,7 +125,7 @@ function App() {
 
 
 
-// ---------- Use Effect Running when page load----------
+  // ---------- Use Effect Running when page load----------
   useEffect(() => {
 
 
@@ -175,38 +179,59 @@ function App() {
 
 
 
-// ---------- Sending post in Database (Firebase) ----------
+  // ---------- Sending post in Database (Firebase) ----------
   const sendPost = async (e) => {
     e.preventDefault();
 
     console.log("Save post function running and value is ", value);
 
 
-    if (value === "" || value === " ") {
-      return;
-    }
-    else {
-      try {
-        const docRef = await addDoc(collection(db, classId),{
-          text: value,
-          createdOn: serverTimestamp(),
-          userIp: ip,
-        });
-        console.log("Document written with ID: ", docRef.id);
-      }
-      catch (e) {
-        console.error("Error adding document: ", e);
-      }
-      // setValue("");
-      document.getElementById("mainInp").value = null;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "postImage");
+    // formData.append("cloud_name", postImage);
 
-    }
+    axios.post(`https://api.cloudinary.com/v1_1/dg5fxzdg1/image/upload`, formData)
+      .then(async (res) => {
+        console.log(res.data);
+
+        // if (value === "" || value === " " && file === "") {
+        //   return;
+        // }
+        // else {
+          try {
+            const docRef = await addDoc(collection(db, classId), {
+              text: value,
+              createdOn: serverTimestamp(),
+              userIp: ip,
+              img: res?.data?.url,
+            });
+            console.log("Document written with ID: ", docRef.id);
+          }
+          catch (e) {
+            console.error("Error adding document: ", e);
+          }
+          // setValue("");
+          document.getElementById("mainInp").value = null;
+          
+          // }
+          
+        })
+        .catch((err) => {
+          console.error("Error adding document: ", err);
+        })
+        
+        setFile("");
+
+
+
+    // console.log(file);
 
   }
 
 
 
-// ---------- Delete Post ----------
+  // ---------- Delete Post ----------
   const deletePost = async (postId) => {
 
     let password = prompt("Please Enter a Password to Delete This Data.");
@@ -222,7 +247,7 @@ function App() {
 
 
 
-// ---------- Delete All Posts ----------
+  // ---------- Delete All Posts ----------
   const deleteAll = async () => {
 
     console.log("Delete all function running");
@@ -263,18 +288,36 @@ function App() {
           </form>
         </div>
 
+
         <div className="add_file_inp nav_mid_child">
           <form onSubmit={sendPost}>
-            <input required type="text" id="mainInp" placeholder='Enter any text or Link'
+            <input type="text" id="mainInp" placeholder='Enter any text or Link'
               onChange={(e) => {
                 console.log("onchange");
                 setValue(e.target.value);
               }} />
-            <label htmlFor="addFile"><MdAddPhotoAlternate /></label>
-            <input type="file" id='addFile' className='hide' />
+            <label htmlFor="addFile" >{(changeIcon) ? <AiFillCheckSquare /> : <MdAddPhotoAlternate />}</label>
+            <input type="file" id='addFile' className='hide'
+              onChange={(e) => {
+
+                setFile(e.currentTarget.files[0])
+                // console.log(e.currentTarget.files[0])
+
+                if (e.currentTarget.files[0] === '') {
+                  setChangeIcon(false)
+                  return;
+                }
+                else {
+                  setChangeIcon(true)
+                  return;
+                }
+
+              }}
+            />
             <button><img src={arrow} alt="Submit button" /></button>
           </form>
         </div>
+
 
         <div className="del_all_btn nav-child">
           <button onClick={deleteAll}>Delete All</button>
@@ -288,7 +331,7 @@ function App() {
 
 
         <div className="texts">
-        <p id='class-id-name'>{classId}</p>
+          <p id='class-id-name'>{classId}</p>
 
 
           {posts.map((eachPost, i) => (
@@ -296,15 +339,22 @@ function App() {
             <div className="textcontent" key={i}>
               <p id='dbIP'>{eachPost?.userIp}</p>
 
-              {
-                (eachPost.text.slice(0, 5) === "https" || eachPost.text.slice(0, 4) === "http")
-                  ?
-                  <p id='text_link'>
-                    <a href={eachPost?.text} rel="noreferrer" target="_blank">{eachPost?.text}</a>
-                  </p>
-                  :
-                  <p id='text_link'>{eachPost?.text}</p>
-              }
+              <div className="text_and_image">
+                {
+                  (eachPost.text.slice(0, 5) === "https" || eachPost.text.slice(0, 4) === "http")
+                    ?
+                    <p id='text_link'>
+                      <a href={eachPost?.text} rel="noreferrer" target="_blank">{eachPost?.text}</a>
+                    </p>
+                    :
+                    <p id='text_link'>{eachPost?.text}</p>
+                }
+
+                <img src={eachPost?.img} alt="" />
+
+              </div>
+
+
 
               <div id="fromNow">
                 <p>{moment((eachPost?.createdOn?.seconds)
