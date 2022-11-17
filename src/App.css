@@ -226,13 +226,13 @@ body {
 .content>.texts>.textcontent {
     font-family: 'Poppins', sans-serif;
     border-bottom: .3px solid #d2d0d0;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.content>.texts>.textcontent>.text_and_image{
+.content>.texts>.textcontent>.text_and_image {
     /* border: 1px solid red; */
     width: 550px;
     display: flex;
@@ -241,7 +241,7 @@ body {
     flex-direction: column;
 }
 
-.content>.texts>.textcontent>.text_and_image>img{
+.content>.texts>.textcontent>.text_and_image>img {
     width: 50%;
     margin-top: 30px;
 }

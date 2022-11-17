@@ -179,26 +179,47 @@ function App() {
 
 
 
+
   // ---------- Sending post in Database (Firebase) ----------
   const sendPost = async (e) => {
     e.preventDefault();
 
-    console.log("Save post function running and value is ", value);
+    // console.log("Save post function running and value is ", value);
+
+    // console.log("file", typeof file);
 
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "postImage");
-    // formData.append("cloud_name", postImage);
 
-    axios.post(`https://api.cloudinary.com/v1_1/dg5fxzdg1/image/upload`, formData)
-      .then(async (res) => {
-        console.log(res.data);
+    if (file === "" || file === undefined || file === null) {
 
-        // if (value === "" || value === " " && file === "") {
-        //   return;
-        // }
-        // else {
+      try {
+        const docRef = await addDoc(collection(db, classId), {
+          text: value,
+          createdOn: serverTimestamp(),
+          userIp: ip,
+          // img: imgUrl,
+        });
+        console.log("Document written with ID: ", docRef.id);
+      }
+      catch (e) {
+        console.error("Error adding document: ", e);
+      }
+      document.getElementById("mainInp").value = null;
+      setFile("");
+      setValue("");
+
+    }
+    else {
+      // Image send on cloudnairy and get url
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "postImage");
+
+      axios.post(`https://api.cloudinary.com/v1_1/dg5fxzdg1/image/upload`, formData)
+        .then(async (res) => {
+          // console.log(res.data);
+          // setimgUrl(res?.data?.url);
+
           try {
             const docRef = await addDoc(collection(db, classId), {
               text: value,
@@ -211,23 +232,21 @@ function App() {
           catch (e) {
             console.error("Error adding document: ", e);
           }
-          // setValue("");
-          document.getElementById("mainInp").value = null;
-          
-          // }
-          
+          document.getElementById("mainInp").value = null
+          setFile("");
+          setValue("");
+
         })
         .catch((err) => {
           console.error("Error adding document: ", err);
         })
-        
-        setFile("");
-        setChangeIcon(false)
+    }
 
 
 
-    // console.log(file);
 
+    setFile("");
+    setChangeIcon(false)
   }
 
 
@@ -294,11 +313,11 @@ function App() {
           <form onSubmit={sendPost}>
             <input type="text" id="mainInp" placeholder='Enter any text or Link'
               onChange={(e) => {
-                console.log("onchange");
+                // console.log("onchange");
                 setValue(e.target.value);
               }} />
             <label htmlFor="addFile" >{(changeIcon) ? <AiFillCheckSquare /> : <MdAddPhotoAlternate />}</label>
-            <input type="file" id='addFile' accept="image/png, image/gif, image/jpeg" className='hide' 
+            <input type="file" id='addFile' accept="image/png, image/gif, image/jpeg" className='hide'
               onChange={(e) => {
 
                 setFile(e.currentTarget.files[0])
@@ -341,6 +360,7 @@ function App() {
               <p id='dbIP'>{eachPost?.userIp}</p>
 
               <div className="text_and_image">
+
                 {
                   (eachPost.text.slice(0, 5) === "https" || eachPost.text.slice(0, 4) === "http")
                     ?
@@ -349,9 +369,20 @@ function App() {
                     </p>
                     :
                     <p id='text_link'>{eachPost?.text}</p>
+                  //     {
+                  //   (eachPost?.text === "" || eachPost.text === " " || eachPost.text === "  ") ?
+                  //     null :
+
+                  // }
                 }
 
-                <img src={eachPost?.img} alt="" />
+
+                {
+                  (eachPost?.img === "" || eachPost?.img === undefined) ? null :
+                    <img src={eachPost?.img} alt="" />
+
+                }
+
 
               </div>
 
